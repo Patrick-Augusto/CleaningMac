@@ -97,7 +97,7 @@ struct ContentView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
                         // Mostra a lista de aplicativos filtrados
-                        ScrollView {
+                        ScrollView(.vertical, showsIndicators: true) {
                             LazyVStack(spacing: 0) {
                                 ForEach(filteredApps) { app in
                                     AppRowView(app: app, appScanner: appScanner)
@@ -105,7 +105,10 @@ struct ContentView: View {
                                 }
                             }
                             .padding(.vertical, 2)
+                            .padding(.horizontal, 16)  // Adiciona padding horizontal para evitar sobreposição
+                            .padding(.trailing, 8)  // Espaço extra à direita para a barra de scroll
                         }
+                        .padding(.bottom, 8)  // Adiciona espaço na parte inferior
                     }
                 }
             }

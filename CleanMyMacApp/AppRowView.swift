@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 struct AppRowView: View {
@@ -43,14 +42,17 @@ struct AppRowView: View {
                     }
                     Spacer()
                     Text(app.size).font(.body)
+                        .padding(.trailing, 8)  // Adiciona espaço entre o tamanho e o botão
                     Button(action: {
                         self.filesToDelete = [app.path] + appScanner.findResidualFiles(for: app)
                         self.showingDeleteAlert = true
                     }) {
                         Image(systemName: "trash")
                             .foregroundColor(.red)
+                            .frame(width: 20, height: 20)  // Define tamanho fixo para o botão
                     }
                     .buttonStyle(BorderlessButtonStyle())
+                    .padding(.trailing, 16)  // Adiciona padding à direita para evitar sobreposição com scroll
                 }
                 .contentShape(Rectangle())
             }
@@ -58,15 +60,16 @@ struct AppRowView: View {
         .alert(isPresented: $showingDeleteAlert) {
             Alert(
                 title: Text("Confirmar Exclusão"),
-                message: Text("Você tem certeza que deseja mover os seguintes arquivos para a lixeira?\n\n\(filesToDelete.joined(separator: "\n"))"),
+                message: Text(
+                    "Você tem certeza que deseja mover os seguintes arquivos para a lixeira?\n\n\(filesToDelete.joined(separator: "\n"))"
+                ),
                 primaryButton: .destructive(Text("Excluir")) {
                     appScanner.deleteFiles(atPaths: filesToDelete, for: app)
                 },
                 secondaryButton: .cancel()
             )
         }
-        }
-
+    }
 
     private func loadContents() {
         DispatchQueue.global(qos: .userInitiated).async {
